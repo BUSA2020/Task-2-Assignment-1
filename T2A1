@@ -1,0 +1,51 @@
+Question 1:
+a)
+# in my SQL create a text file that uses the relevant database, select what columns you want to manipulate from which tables and
+JOIN the two annotation gene / expression gene columns. Our condition using the WHERE command is that the values we will return
+are < 1000
+
+(query.sql)
+USE compbiol
+SELECT a.function, e.expr_value
+FROM annotation LEFT JOIN expression AS e ON a.gene = e.gene
+WHERE e.expr_value < 1000
+ORDER BY expr_value;
+
+# we then logout and go back into the shell. My specific machine needs sudo to use mySQL, we're using -B (Batch) to summon query.sql
+because it will translate the mySQL data data into language the shell will understand (tabulator delimited lines). After using the
+command we will get expression values below 1000. We will also order the expression values with ORDER BY.
+
+sudo mysql -u root -p -B < query.sql
+__________________________________________________________________
+b)
+#make another query, we only want to select from the annotation functions so select a.function, our condition is to return the inputs
+WHERE they contain (LIKE) the "ase" string. Fairly straight forward. 
+
+(query2.sql)
+USE compbiol 
+SELECT function
+FROM annotation
+WHERE function
+LIKE '%ase%';
+
+sudo mysql -u root -p -B < query2.sql
+__________________________________________________________________
+c)
+#make another query, we are selecting all 3 columns to show up (gene, function, metabolism), but if we wanted to we could easily just
+select gene for shorter outputs/less clutter. we are again searching in the annotation table our condition is that WHERE metabolism
+matches a regular expression (REGEXP) Purine and Pyrimidine we will get those results printed out for us
+
+(query3.sql)
+USE compbiol
+SELECT gene, function, metabolism
+FROM annotation
+WHERE metabolism
+REGEXP '(Purine|Pyrimidine) biosynthesis';
+
+sudo mysql -u root -p -B < query3.sql
+__________________________________________________________________
+__________________________________________________________________
+Question 2
+ 
+a)
+
