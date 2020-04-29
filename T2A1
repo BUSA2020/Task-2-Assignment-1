@@ -46,6 +46,28 @@ sudo mysql -u root -p -B < query3.sql
 __________________________________________________________________
 __________________________________________________________________
 Question 2
- 
 a)
+# follow the link, download the zip folder of world_x data. I personally saved it in the C: drive because this was the easiest way 
+for me to complete the task. after I saved it in C i logged into the AWS instance; stabdard scp copy from C drive into the aws instance
+I personally have to use sudo and -r otherwise i get permission denied. we're copying it into the /home/ubuntu drive in order to 
 
+sudo scp -r /c/world_x-db/world_x.sql ubuntu@ec2-13-2-11-204-217.ap-southeast-2.compute.amazonaws.com:/home/ubuntu
+
+#then transfer it into mysql. same style as a standard login except we are importing it into the compbiol database (I didn't create 
+a new one but you could), the < is necessary for importing, > is for exporting. I then wrote down the path it was importing from.
+
+mysql -u root -p compbiol < /home/unbuntu/world_x.sql
+__________________________________________________________________
+b)
+#after part a, i deconstructed the question into its recquired parts, it asked for the country, capital, english language and percentage
+spoken above 50%. I aliased the country table c. and the countrylanguage as l. as they had all the necessary information. Although, my 
+capital return was only the capital ID which would need to be linked up later on. I used country C as the baseline so i could join the 
+two files on the only shared data, which was country ID (three letter symbol) as shown by the join command. I then ordered the results
+by countries and createdthe condition WHEN they were speaking english AND WHEN that percentage was also returning > 0.5 value
+
+SELECT c.country, c.capital, l.percentage, l.language
+FROM [country] c
+JOIN countrylanguage l ON c.code = l.countrycode
+ORDER BY c.country
+WHEN l.language = English
+AND l.percentage > 0.50
